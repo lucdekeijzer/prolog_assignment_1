@@ -1,14 +1,78 @@
 % Answers to the questions:
+/*
+
+Question 2:
+Write a query that answers the question is Tethys a female?
+?- female(tethys).
+true.
+
+Question 3:
+Write a query that answers the question which gods are children of Rhea and Chronus? This should be written on one line, and you should get five answers.
+?- child(X, rhea), child(X, chronus).
+X = hera ;
+X = hades ;
+X = demeter ;
+X = poseidon ;
+X = zeus ;
+false.
+
+Question 5:
+Write a query that answers the question who is the mother of Phoebe?
+?- mother(phoebe, X).
+X = leto ;
+false.
+
+Question 7:
+Write a query that answers the question which gods are partners of Hermes? You should receive two answers.
+?- partner(hermes, X).
+X = dryope ;
+X = aphrodite ;
+false.
+
+Question 9:
+Write a query that answers the question who are bachelors? You should receive seven unique answers.
+
+Question 11:
+Write a query that answers the question who is a sibling of Apollo? You should receive one unique answer, but it can be repeated.
+?- sibling(apollo, X).
+X = artemis ;
+X = artemis ;
+false.
+
+Question 13:
+Write a query that answers the question who is a part of Ares family? You should receive five unique answers.
+?- family(ares, X).
+X = zeus ;
+X = hera ;
+X = eros ;
+X = hephaestus ;
+X = hephaestus ;
+X = hephaestus ;
+X = hephaestus ;
+X = aphrodite ;
+X = aphrodite ;
+false.
+
+Question 15:
+Write a query, without creating a new rule, that answers the question which goddesses have more than one partner? There can be duplicates among the answers.
+?- female(X), partner(X, Y), partner(X, Z), Y\=Z.
+X = aphrodite,
+Y = ares,
+Z = hermes ;
+X = aphrodite,
+Y = hermes,
+Z = ares ;
+false.
+
+*/
 
 
 
-% M is the child of C if C is the child of M and M is a female.
 
-
-
-
+% Question 1:
 child(pan, hermes).
 child(pan, dryope).
+
 
 child(rhea,uranus).
 child(rhea,gaia).
@@ -90,15 +154,33 @@ grandchild(C,Gp) :- child(C,P), child(P,Gp).
 % C is a son of P if C is the child of P, and C is not female.
 son(C,P) :- child(C,P), \+ female(C).
 % A is parther with B if they have a child together.
-partner(A, B) :- child(C, A), child(C, B), not(A = B) .
+% partner(A, B) :- child(C, A), child(C, B), not(A = B) .
 % X and Y are in a family if X is the child of Y, or Y is the child of X.
+% Question 12:
 family(X,Y) :- child(X,Y).
 family(X,Y) :- child(Y,X).
+family(X,Y) :- sibling(X,Y).
+family(X,Y) :- sibling(Y,X).
+family(X,Y) :- partner(X,Y).
+family(X,Y) :- partner(Y,X).
 % X is a titan if X is the child of Y, and Y is Uranus.
-titan(X) :- child(X,Y), Y == uranus.
+% Question 14:
+titan(X) :- child(X,uranus).
+
+% Question 4:
 mother(M, C) :- child(C, M), female(M).
-% partner(A, B) :- child(C,A), child(C, B).
-bachelor(X) :- \+ child(x, X), \+ female(X).
+
+% Question 6:
+partner(A, B) :- child(C,A), child(C, B), A\=B.
+
+% Question 8:
+bachelor(X) :- \+ child(X, C), \+ female(X).
+
+% Question 10:
+sibling(A, B) :- child(A, M), child(B, M), child(A,P), child(B,P), A\=B, M\=P.
+
+
+
 
 % Printouts from prompt:
 % Is Atlas female?
